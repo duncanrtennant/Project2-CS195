@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import EquipmentList from '../components/EquipmentList.jsx';
 import { getEquipment, createEquipment, updateEquipment, deleteEquipment, getInventory } from './api/equipments.js';
+import EncounterButton from '../components/EcounterButton.jsx';
 
 function App() {
   // State management
@@ -12,6 +13,7 @@ function App() {
   const [error, setError] = useState(null);
   const [log,setLog] = useState(``);
   const [equippedItem, setEquippedItem] = useState(null);
+  const [monster, setMonster] = useState(null);
 
   // Load equipments from database on mount
   useEffect(() => {
@@ -111,10 +113,16 @@ function App() {
     }
   }
 
-  const handleEncounter = async (monsterHealth, monsterRounds) => {
+  const handleEncounter = async (button) => {
+    button.style.cursor = "not-allowed";
+    //setMonsterHealth(health);
+    //setMonsterRounds(rounds);
     for (let i=0; i < monsterRounds;i++){
-      let damageRoll = Math.random() * (getInventory);
-      monsterHealth-=getInventory;
+      if(equippedItem){
+        setMonsterHealth(monsterHealth => monsterHealth -Math.floor(Math.random() * (equippedItem.damageHigh-equippedItem.damageLow) + equippedItem.damageLow));
+      } else{
+       setMonsterHealth(monsterHealth => monsterHealth - Math.floor(Math.random() * (1-0) + 0));
+      }
       if(monsterHealth<=0){
 
       }
@@ -163,24 +171,24 @@ function App() {
         <div className="map-section">
           <h2>Map</h2>
           <div className="map-grid">
-            <button type="button" className="map-cell">cell 1</button>
-            <button className="map-cell">cell 2</button>
-            <button className="map-cell">cell 3</button>
-            <button className="map-cell">cell 4</button>
-            <button className="map-cell">cell 5</button>
-            <button className="map-cell">cell 6</button>
-            <button className="map-cell">cell 7</button>
-            <button className="map-cell">cell 8</button>
-            <button className="map-cell">cell 9</button>
-            <button className="map-cell">cell 10</button>
-            <button className="map-cell">cell 11</button>
-            <button className="map-cell">cell 12</button>
+            <EncounterButton onClick={handleEncounter} text={"cell 1"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 2"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 3"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 4"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 5"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 6"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 7"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 8"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 9"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 10"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 11"} />
+            <EncounterButton onClick={handleEncounter} text={"cell 12"} />
           </div>
         </div>
 
         {/* Panel 3: text output */}
         <div className="text-section">
-
+          <h2> Text output</h2>
         </div>
       </div>
     </div>

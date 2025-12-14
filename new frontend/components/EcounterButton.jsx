@@ -1,9 +1,11 @@
-import React, {useState} from "react";
 
-//randomizer code sourced from https://stackoverflow.com/questions/62709706/how-do-i-get-a-random-element-from-an-array-when-a-button-is-clicked
-function EncounterButton(onClick) {
-    const monsterList=[]
+function EncounterButton({onClick, text}) {
     return(
-        <div></div>
+        <div>
+            <button type="button" className="map-cell" id={text} onClick={onClick}>{text}</button>
+        </div>
     )
 }
+
+
+export default EncounterButton;
