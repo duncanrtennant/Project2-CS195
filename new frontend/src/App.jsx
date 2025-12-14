@@ -11,7 +11,7 @@ function App() {
   const [newEquipmentTitle, setNewEquipmentTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [log,setLog] = useState(``);
+  // const [log,setLog] = useState(``);
   const [equippedItem, setEquippedItem] = useState(null);
   // const [monster, setMonster] = useState(null);
   const [randomNumber, setRandomNumber] = useState(0);
