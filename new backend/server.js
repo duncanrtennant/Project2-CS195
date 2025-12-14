@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import equipmentRoutes from "./routes/equipments.js";
-import inventoryRoutes from "./routes/inventories.js";
 
 dotenv.config();
 
@@ -28,14 +27,13 @@ app.get("/", (req, res) => {
     status: "Running",
     endpoints: {
       equipments: "/api/equipments",
-      sessions: "/api/inventories",
     },
   });
 });
 
 // Routes
 app.use("/api/equipments", equipmentRoutes);
-app.use("/api/inventories", inventoryRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

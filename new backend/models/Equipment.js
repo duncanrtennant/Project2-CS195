@@ -18,6 +18,10 @@ const equipmentSchema = new mongoose.Schema({
     lore: {
         type: String,
         required: false,
+    },
+    equipped: {
+        type: Boolean,
+        default: false,
     }
 });
 

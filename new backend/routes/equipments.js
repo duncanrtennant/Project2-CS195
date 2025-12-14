@@ -22,6 +22,15 @@ router.get("/", async(req, res) => {
     res.status(500).json({error: error.message});
   }
 });
+// GET all equipped equipment
+router.get("/equipped", async(req, res) => {
+  try {
+    const equipments = await Equipment.find({equipped:'true'});
+    res.status(200).json(equipments);
+  } catch (error) {
+    res.status(500).json({error: error.message});
+  }
+});
 // GET equipment by id
 router.get("/:id", async(req, res) => {
   try {
@@ -82,5 +91,7 @@ router.delete("/:id", async(req, res) => {
     res.status(500).json({ message: error.message});
   }
 });
+
+
 
 export default router;

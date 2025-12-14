@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import EquipmentList from '../components/EquipmentList.jsx';
-import PomodoroTimer from '../components/PomodoroTimer.jsx';
 import { getEquipment, createEquipment, updateEquipment, deleteEquipment } from './api/equipments.js';
 
 function App() {
   // State management
   const [equipment, setEquipment] = useState([]);
-  const [activeEquipment, setActiveEquipment] = useState(null);
+  const [equippedEquipment, setEquippedEquipment] = useState(null);
   const [newEquipmentTitle, setNewEquipmentTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,6 +20,21 @@ function App() {
    * Fetch all equipments from backend
    */
   const loadEquipment = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getEquipment();
+      setEquipment(data);
+    } catch (err) {
+      console.error('Error loading equipment:', err);
+      setError('Failed to load equipment. Make sure your backend is running.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch only equipped equipment from backend
+  const loadInventory = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -80,7 +94,7 @@ function App() {
   };*/
 
   /**
-   * Delete a equipment
+   * Delete equipment
    */
   const handleDeleteEquipment = async (equipmentId) => {
     try {
@@ -121,9 +135,9 @@ function App() {
       )}
 
       <div className="main-content">
-        {/* Left side: Inventory */}
+        {/* Left side: Equipment */}
         <div className="equipment-section">
-          <h2>Inventory</h2>
+          <h2>Equipment</h2>
           
 
           {/* Equipment List */}
@@ -133,19 +147,14 @@ function App() {
           />
         </div>
 
-        {/* Right side: Equipment */}
-        <div className="timer-section">
-          <h2>Focus Time</h2>
-          {activeEquipment ? (
-            <>
-              <div className="active-equipment-display">
-              </div>
-            </>
-          ) : (
-            <div className="no-equipment-selected">
-              <p>← Select a equipment to start focusing</p>
-            </div>
-          )}
+        {/* Right side: Inventory */}
+        <div className="equipment-section">
+          <h2>Inventory</h2>
+          {/* Equipment List */}
+          <EquipmentList
+            equipment={equipment}
+            onDeleteEquipment={handleDeleteEquipment}
+          />
         </div>
       </div>
     </div>

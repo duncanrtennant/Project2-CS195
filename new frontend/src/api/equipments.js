@@ -10,6 +10,8 @@ export const getEquipment = async () => {
   return response.json();
 };
 
+export const getInventory = async ()
+
 // Create new equipment
 // TODO: implement proper equipment creation
 export const createEquipment = async (equipmentData) => {
