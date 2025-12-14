@@ -1,13 +1,13 @@
-function EquipmentItem({ equipment, onDelete }) {
+function EquipmentItem({ equipment, isEquipped, onDelete, onSelect }) {
   return (
-    <div className={`equipment-item`}>
+    <div className={`equipment-item ${isEquipped ? 'equipped' : ''}`}>
 
       {/* Equipment content*/}
-      <div className="equipment-content">
+      <div className="equipment-content" onClick={onSelect}>
         <h3 className="equipment-name">{equipment.equipmentName}</h3>
         <div className="equip-meta">
-          <span className="equip-damage-low">Low damage: {equipment.damageLow}</span><br/>
-          <span className="equip-damage-high">High damage: {equipment.damageHigh}</span>
+          <span className="equip-test">Low damage: {equipment.damageLow}</span><br/>
+          <span className="equip-test">High damage: {equipment.damageHigh}</span>
         </div>
         <div className="equip-lore">{equipment.lore}</div>
       </div>
@@ -18,7 +18,7 @@ function EquipmentItem({ equipment, onDelete }) {
         className="delete-button"
         aria-label="Delete Equipment"
       >
-        Delete
+        Drop
       </button>
     </div>
   );

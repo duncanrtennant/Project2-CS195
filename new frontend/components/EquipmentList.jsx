@@ -1,10 +1,10 @@
 import EquipmentItem from './EquipmentItem';
 
-function EquipmentList({ equipment, onDeleteEquipment }) {
+function EquipmentList({ equipment, equippedItem, onDeleteEquipment, onSelectEquipment }) {
   if (equipment.length === 0) {
     return (
       <div className="empty-state">
-        <p>No equipment yet. Add one above to get started!</p>
+        <p>No equipment yet. Explore the map to find more</p>
       </div>
     );
   }
@@ -15,6 +15,8 @@ function EquipmentList({ equipment, onDeleteEquipment }) {
         <EquipmentItem
           key={equipment._id}
           equipment={equipment}
+          isEquipped={equippedItem?._id === equipment._id}
+          onSelect={() => onSelectEquipment(equipment)}
           onDelete={() => onDeleteEquipment(equipment._id)}
         />
       ))}

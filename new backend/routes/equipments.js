@@ -22,10 +22,10 @@ router.get("/", async(req, res) => {
     res.status(500).json({error: error.message});
   }
 });
-// GET all equipped equipment
-router.get("/equipped", async(req, res) => {
+// GET all carried equipment
+router.get("/carried", async(req, res) => {
   try {
-    const equipments = await Equipment.find({equipped:'true'});
+    const equipments = await Equipment.find({carried:'true'});
     res.status(200).json(equipments);
   } catch (error) {
     res.status(500).json({error: error.message});

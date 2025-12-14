@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import EquipmentList from '../components/EquipmentList.jsx';
-import { getEquipment, createEquipment, updateEquipment, deleteEquipment } from './api/equipments.js';
+import { getEquipment, createEquipment, updateEquipment, deleteEquipment, getInventory } from './api/equipments.js';
 
 function App() {
   // State management
   const [equipment, setEquipment] = useState([]);
-  const [equippedEquipment, setEquippedEquipment] = useState(null);
+  const [inventory, setInventory] = useState([]);
   const [newEquipmentTitle, setNewEquipmentTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [log,setLog] = useState(``);
+  const [equippedItem, setEquippedItem] = useState(null);
 
   // Load equipments from database on mount
   useEffect(() => {
     loadEquipment();
+    loadInventory();
   }, []);
 
   /**
@@ -38,8 +41,8 @@ function App() {
     try {
       setLoading(true);
       setError(null);
-      const data = await getEquipment();
-      setEquipment(data);
+      const data = await getInventory();
+      setInventory(data);
     } catch (err) {
       console.error('Error loading equipment:', err);
       setError('Failed to load equipment. Make sure your backend is running.');
@@ -47,6 +50,11 @@ function App() {
       setLoading(false);
     }
   };
+
+  const handleEquipItem = (equipment) => {
+    setEquippedItem(equipment);
+    console.log(equippedItem);
+  }
 
   /**
    * Add a new equipment
@@ -71,29 +79,6 @@ function App() {
   };
 
   /**
-   * Toggle equipment completion
-   *
-  const handleToggleComplete = async (equipmentId) => {
-    try {
-      // Find the equipment to get current completion status
-      const equipment = equipments.find(t => t._id === equipmentId);
-      
-      // 1. Update in database
-      const updatedEquipment = await updateEquipment(equipmentId, { 
-        completed: !equipment.completed 
-      });
-      
-      // 2. Update in React state
-      setEquipments(equipments.map(t => 
-        t._id === equipmentId ? updatedEquipment : t
-      ));
-    } catch (err) {
-      console.error('Error toggling equipment:', err);
-      setError('Failed to update equipment');
-    }
-  };*/
-
-  /**
    * Delete equipment
    */
   const handleDeleteEquipment = async (equipmentId) => {
@@ -110,6 +95,32 @@ function App() {
     }
   };
 
+  const handleDropEquipment = async (equipmentId) => {
+    try {
+      await updateEquipment(equipmentId,
+        {equipped:'false'}
+      );
+      setInventory(inventory.filter(i => i._id !== equipmentId));
+
+      if (equippedItem?._id === equipmentId) {
+        setEquippedItem(null);
+      }
+    } catch (err) {
+      console.error('Error dropping equipment:', err);
+      setError('Failed to drop equipment');
+    }
+  }
+
+  const handleEncounter = async (monsterHealth, monsterRounds) => {
+    for (let i=0; i < monsterRounds;i++){
+      let damageRoll = Math.random() * (getInventory);
+      monsterHealth-=getInventory;
+      if(monsterHealth<=0){
+
+      }
+    }
+  }
+
   // Loading state
   if (loading) {
     return (
@@ -124,7 +135,7 @@ function App() {
     <div className="app">
       <header>
         <h1>LOsD</h1>
-        <p>Leightweight One-screen Dungeon</p>
+        <p>Lightweight One-screen Dungeon</p>
       </header>
 
       {error && (
@@ -135,26 +146,41 @@ function App() {
       )}
 
       <div className="main-content">
-        {/* Left side: Equipment */}
+        {/* Panel 1: Inventory */}
         <div className="equipment-section">
-          <h2>Equipment</h2>
-          
-
-          {/* Equipment List */}
+          <h2>Inventory</h2>
+          <h3>Click to equip</h3>
+          {/* Inventory List */}
           <EquipmentList
-            equipment={equipment}
-            onDeleteEquipment={handleDeleteEquipment}
+            equipment={inventory}
+            equippedItem={equippedItem}
+            onSelectEquipment={handleEquipItem}
+            onDeleteEquipment={handleDropEquipment}
           />
         </div>
 
-        {/* Right side: Inventory */}
-        <div className="equipment-section">
-          <h2>Inventory</h2>
-          {/* Equipment List */}
-          <EquipmentList
-            equipment={equipment}
-            onDeleteEquipment={handleDeleteEquipment}
-          />
+        {/* Panel 3: map */}
+        <div className="map-section">
+          <h2>Map</h2>
+          <div className="map-grid">
+            <button type="button" className="map-cell">cell 1</button>
+            <button className="map-cell">cell 2</button>
+            <button className="map-cell">cell 3</button>
+            <button className="map-cell">cell 4</button>
+            <button className="map-cell">cell 5</button>
+            <button className="map-cell">cell 6</button>
+            <button className="map-cell">cell 7</button>
+            <button className="map-cell">cell 8</button>
+            <button className="map-cell">cell 9</button>
+            <button className="map-cell">cell 10</button>
+            <button className="map-cell">cell 11</button>
+            <button className="map-cell">cell 12</button>
+          </div>
+        </div>
+
+        {/* Panel 3: text output */}
+        <div className="text-section">
+
         </div>
       </div>
     </div>

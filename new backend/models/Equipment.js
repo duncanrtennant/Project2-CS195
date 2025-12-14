@@ -19,10 +19,10 @@ const equipmentSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    equipped: {
+    carried: {
         type: Boolean,
         default: false,
-    }
+    },
 });
 
 export default mongoose.model("Equipment", equipmentSchema);

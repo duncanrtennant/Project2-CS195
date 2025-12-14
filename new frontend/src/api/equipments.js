@@ -10,8 +10,6 @@ export const getEquipment = async () => {
   return response.json();
 };
 
-export const getInventory = async ()
-
 // Create new equipment
 // TODO: implement proper equipment creation
 export const createEquipment = async (equipmentData) => {
@@ -53,3 +51,12 @@ export const deleteEquipment = async (id) => {
   }
   return response.json();
 };
+
+// Get carried equipment (inventory)
+export const getInventory = async() => {
+  const response = await fetch(`${API_URL}/equipments/carried`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch inventory`);
+  }
+  return response.json();
+}
