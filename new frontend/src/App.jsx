@@ -13,7 +13,9 @@ function App() {
   const [error, setError] = useState(null);
   const [log,setLog] = useState(``);
   const [equippedItem, setEquippedItem] = useState(null);
-  const [monster, setMonster] = useState(null);
+  // const [monster, setMonster] = useState(null);
+  const [randomNumber, setRandomNumber] = useState(0);
+
 
   // Load equipments from database on mount
   useEffect(() => {
@@ -96,11 +98,12 @@ function App() {
       setError('Failed to delete equipment');
     }
   };
-
+  // 'drop' equipment
+  // remove equipment from inventory without removing it from the database
   const handleDropEquipment = async (equipmentId) => {
     try {
       await updateEquipment(equipmentId,
-        {equipped:'false'}
+        {carried:'false'}
       );
       setInventory(inventory.filter(i => i._id !== equipmentId));
 
@@ -113,10 +116,26 @@ function App() {
     }
   }
 
-  const handleEncounter = async (button) => {
-    button.style.cursor = "not-allowed";
-    //setMonsterHealth(health);
-    //setMonsterRounds(rounds);
+  const handlePickupEquipment = async (equipmentId) => {
+    try {
+      const newEquipment = await updateEquipment(equipmentId,
+        {carried:'true'}
+      );
+
+    } catch (err) {
+      console.error('Error dropping equipment:', err);
+      setError('Failed to drop equipment');
+    }
+  }
+
+  const generateRandomNumber = () => {
+    const randomNumber = Math.floor(Math.random() * equipment.length);
+    setRandomNumber(randomNumber);
+  }
+  const handleEncounter = async () => {
+    /*button.style.cursor = "not-allowed";
+    setMonsterHealth(health);
+    setMonsterRounds(rounds);
     for (let i=0; i < monsterRounds;i++){
       if(equippedItem){
         setMonsterHealth(monsterHealth => monsterHealth -Math.floor(Math.random() * (equippedItem.damageHigh-equippedItem.damageLow) + equippedItem.damageLow));
@@ -126,7 +145,11 @@ function App() {
       if(monsterHealth<=0){
 
       }
-    }
+    }*/
+   // ===== Code above is the WIP 'combat' system =====
+   // ===== Code below allows random pickups when you enter a room as a temporary solution to show features =====
+    generateRandomNumber();
+    handlePickupEquipment(equipment[randomNumber]._id);
   }
 
   // Loading state
