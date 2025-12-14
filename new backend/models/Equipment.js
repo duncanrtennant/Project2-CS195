@@ -8,17 +8,16 @@ const equipmentSchema = new mongoose.Schema({
     damageLow: {
         type:Number,
         required:true,
+        min:0,
     },
     damageHigh: {
         type: Number,
         required: true,
+        min:1,
     },
     lore: {
         type: String,
-    },
-    equipped: {
-        type: Boolean,
-        required: true,
+        required: false,
     }
 });
 
