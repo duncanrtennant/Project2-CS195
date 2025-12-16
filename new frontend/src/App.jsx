@@ -57,11 +57,13 @@ function App() {
 
   const handleEquipItem = (equipment) => {
     setEquippedItem(equipment);
+    equipment.carried=true;
     console.log(equippedItem);
   }
 
   /**
    * Add a new equipment
+   * Not implemented in final product due to players not being able to create their own equipment
    */
   const handleAddEquipment = async (e) => {
     e.preventDefault();
@@ -121,6 +123,7 @@ function App() {
       const newEquipment = await updateEquipment(equipmentId,
         {carried:'true'}
       );
+      setInventory(inventory);
 
     } catch (err) {
       console.error('Error dropping equipment:', err);
@@ -132,6 +135,7 @@ function App() {
     const randomNumber = Math.floor(Math.random() * equipment.length);
     setRandomNumber(randomNumber);
   }
+
   const handleEncounter = async () => {
     /*button.style.cursor = "not-allowed";
     setMonsterHealth(health);
@@ -150,6 +154,7 @@ function App() {
    // ===== Code below allows random pickups when you enter a room as a temporary solution to show features =====
     generateRandomNumber();
     handlePickupEquipment(equipment[randomNumber]._id);
+    console.log("Item picked up: " + equipment[randomNumber].equipmentName);
   }
 
   // Loading state
@@ -190,7 +195,7 @@ function App() {
           />
         </div>
 
-        {/* Panel 3: map */}
+        {/* Panel 2: map */}
         <div className="map-section">
           <h2>Map</h2>
           <div className="map-grid">
@@ -209,9 +214,23 @@ function App() {
           </div>
         </div>
 
-        {/* Panel 3: text output */}
+        {/* Panel 3: text output
+        ===== Code below is a relic of old plan for 'encounter' system, unimplemented in time alloted =====
         <div className="text-section">
           <h2> Text output</h2>
+        </div>*/}
+
+        {/* Panel 3: loot pool */}
+        <div className="equipment-section">
+          <h2>Loot Pool</h2>
+          <h3>Click to pick up</h3>
+          {/* Loot pool list */}
+          <EquipmentList
+            equipment={equipment}
+            equippedItem={equippedItem}
+            onSelectEquipment={handleEquipItem}
+            onDeleteEquipment={handleDeleteEquipment}
+          />
         </div>
       </div>
     </div>
